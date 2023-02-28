@@ -21,6 +21,7 @@
  */
 
 package org.owasp.webgoat.webwolf;
+import io.openpixee.security.Filenames;
 
 import static org.springframework.http.MediaType.ALL_VALUE;
 
@@ -75,8 +76,8 @@ public class FileServer {
     var user = (WebGoatUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     var destinationDir = new File(fileLocation, user.getUsername());
     destinationDir.mkdirs();
-    myFile.transferTo(new File(destinationDir, myFile.getOriginalFilename()));
-    log.debug("File saved to {}", new File(destinationDir, myFile.getOriginalFilename()));
+    myFile.transferTo(new File(destinationDir, Filenames.toSimpleFileName(myFile.getOriginalFilename())));
+    log.debug("File saved to {}", new File(destinationDir, Filenames.toSimpleFileName(myFile.getOriginalFilename())));
 
     return new ModelAndView(
         new RedirectView("files", true),
